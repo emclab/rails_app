@@ -1,0 +1,6 @@
+<div class="fields">
+  <%= f.input :position, :collection => return_position, :prompt => "选职位", 
+                      :label => false, :include_blank => true, :selected => i_id %>
+  <%= link_to_remove_fields "remove", f %>
+</div>
+

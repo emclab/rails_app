@@ -1,0 +1,39 @@
+<div id="main_body">
+<p>
+  <b>姓名:</b>
+  <%= @user.name %>
+</p>
+<p>
+  <b>登录名:</b>
+  <%= @user.login %>
+</p>
+<p>
+  <b>电邮:</b>
+  <%= @user.email %>
+</p>
+<p>
+<p>
+  <b>状态:</b>
+  <%= return_user_status_name(@user.status) %>
+</p>
+<p>
+  <b>属性:</b>
+  <%= return_user_type_name(@user.user_type) %>
+</p>
+</p>
+  <b>职位：</b>
+  <ol>
+  <% @user.user_levels.each do |ul| %>
+    <li><%= return_position_name(ul.position) %></li>
+  <% end %>
+  </ol>
+</p>
+<p>
+  <b>输入/更改人:</b>
+  <%= @user.last_updated_by.name %>
+</p>
+<p>
+  <%= link_to "Back", SUBURI + "/view_handler?index=0" %>	
+  <%= link_to "Edit", SUBURI + "/view_handler?index=1&url=#{edit_user_path(@user)}" %> 
+</p>
+</div>

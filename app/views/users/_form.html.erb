@@ -1,0 +1,30 @@
+<%= simple_form_for @user do |f| %>
+  <%= f.input :name, :label => '名字：' %>
+  <%= f.input :login, :label => '登录名：', :hint => '6位或以上' %>
+  <%= f.input :update_password_checkbox, :as => :boolean, :label => '更新密码' %>
+  <%= f.input :status, :collection => return_user_status, :selected => @user.status, :label => '用户状态：' %>
+  <div id='user_password'>
+  <%= f.input :password, :label => '密码：', :hint => '6位或以上'  %>
+  <%= f.input :password_confirmation, :label => '验证密码：' %>
+  </div>
+  <div style="padding-left:12px">属性：&nbsp;&nbsp;<%= return_user_type_name(@user.user_type) %></div>
+  &nbsp;&nbsp;用户职位：
+  <div id="user_user_levels">
+  <%= f.fields_for :user_levels, @user.user_levels.first do |builder| %>
+    <p><%= builder.input :position, :collection => return_position, :prompt => "选职位", 
+                    :label => false, :include_blank => true, :selected => @user.user_levels.first.position %>
+    </p>  
+  <% end %> 
+	
+  <% @user.user_levels.offset(1).each do |level| %>	 
+    <%= f.fields_for :user_levels, level do |builder| %>
+      <p><%= builder.input :position, :collection => return_position, :prompt => "选职位", 
+                      :label => false, :include_blank => true, :selected => level.position %>
+      	删除: <%= builder.check_box :_destroy %>
+      </p>  
+    <% end %> 
+  <% end if @user.user_levels.count > 1 %>
+  </div>  
+  <p><%= link_to_add_fields "加选职位", f, :user_levels %></p>
+  <p><%= f.button :submit, '保存' %></p>
+<% end %>
