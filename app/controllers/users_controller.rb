@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(params[:user], :as => :admin)
     @user.last_updated_by_id = session[:user_id]
     if @user.save
       redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=用户已保存！")
@@ -42,7 +42,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     @user.last_updated_by_id = session[:user_id]
-    if @user.update_attributes(params[:user])
+    if @user.update_attributes(params[:user], :as => :admin)
       redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=更改已保存！")
     else
       flash.now[:error] = '修改无法保存！'
@@ -97,11 +97,24 @@ class UsersController < ApplicationController
   end
   
   def return_position_name(position)
+    pos = ''
     case position
     when 'admin'
-      '系统管理员'
+      pos = '系统管理员'
     when 'ceo'
-      '董事长'
+      pos = '董事长'
+    when 'acct'
+      pos = '财会'
+    when 'vp_eng'
+      pos = '工程副总'
+    when 'eng'
+      pos = '工程师'
+    when 'coo'
+      pos = '总经理'
+    when 'vp_sales'
+      pos = '销售副总'
     end
+    return position if pos.nil?
+    return pos
   end  
 end

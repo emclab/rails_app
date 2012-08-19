@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~>3.1.4' #latest rail supported for the gem list below
+gem 'rails', '3.2.8' #latest rail supported for the gem list below
 
 gem 'sqlite3'
 gem 'jquery-rails'
@@ -16,8 +16,8 @@ group :assets do
     gem 'execjs'
     gem 'therubyracer', :platforms => :ruby
   end  
-  gem 'sass-rails',   '~> 3.1.5'
-  gem 'coffee-rails', '~> 3.1.1'
+  gem 'sass-rails',   '~> 3.2.5'
+  gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
 end
 

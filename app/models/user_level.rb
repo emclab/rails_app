@@ -1,5 +1,7 @@
+# encoding: utf-8
 class UserLevel < ActiveRecord::Base
   belongs_to :user 
-  attr_accessible :position   #protected by user controller. only user controller can acees user level.
-  validates :position, :presence => true
+  
+  attr_accessible :position, :as => :admin   
+  validates_presence_of :position, :message => '选择用户职位'
 end

@@ -49,7 +49,6 @@ describe UsersController do
     describe "'index'" do
       it "returns http success" do 
         u = FactoryGirl.create(:user)  
-        #ul = FactoryGirl.create(:user_level, :user_id => u.id)  
         get 'index'
         response.should be_success
         assigns(:users).should eq([u])
@@ -85,9 +84,8 @@ describe UsersController do
     
       it "returns http success with a valid input and increase the user count by 1" do
         session[:user_id] = 1
-        #u = FactoryGirl.attributes_for(:user, :user_levels_attributes => { '1' => {:position => 'ceo'}})
-        u = FactoryGirl.attributes_for(:user, :user_levels_attributes => [{:position => 'ceo'}])
-        #u = FactoryGirl.attributes_for(:user)
+        u = FactoryGirl.attributes_for(:user, :user_levels_attributes => { '1' => {:position => 'ceo'}})
+        #u = FactoryGirl.attributes_for(:user, :user_levels_attributes => [{:position => 'ceo'}])  #works without '1' => as well.
         lambda do
           get 'create', :user => u
           response.should redirect_to URI.escape("/view_handler?index=0&msg=用户已保存！")
@@ -97,7 +95,6 @@ describe UsersController do
       it "returns http success with a valid user level input and increase the user level count by 1" do
         session[:user_id] = 1
         u = FactoryGirl.attributes_for(:user, :user_levels_attributes => [ {:position => 'admin'}])
-        #u = FactoryGirl.attributes_for(:user)
         lambda do
           get 'create', :user => u
           response.should redirect_to URI.escape("/view_handler?index=0&msg=用户已保存！")
@@ -114,9 +111,8 @@ describe UsersController do
     end
 
     describe "'update'" do
-       it "returns success with a valid update" do
-       u = FactoryGirl.create(:user)      
-        ul = FactoryGirl.create(:user_level, :user_id => u.id)
+      it "returns success with a valid update" do
+        u = FactoryGirl.create(:user)      
         session[:user_id] = 1
         get 'update', :id => u.id, :user => {:name => 'a new name'}
         response.should redirect_to URI.escape("/view_handler?index=0&msg=更改已保存！")
@@ -124,7 +120,6 @@ describe UsersController do
     
       it "would be OK to update the user level" do
         u = FactoryGirl.create(:user)      
-        ul = FactoryGirl.create(:user_level, :user_id => u.id)
         session[:user_id] = u.id
         get 'update', :id => u.id, :user => {:user_levels_attributes => [{:position => 'a new name'}]}
         response.should redirect_to URI.escape("/view_handler?index=0&msg=更改已保存！")

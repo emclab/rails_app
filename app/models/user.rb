@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   
   #before_filter :require_admin protects the mass assignment.
   attr_accessible :name, :login, :update_password_checkbox, :password_confirmation, :password, :user_levels_attributes, 
-                  :user_type, :status
+                  :user_type, :status, :as => :admin
   
   has_many :user_levels, :dependent => :destroy 
   belongs_to :last_updated_by, :class_name => "User"
@@ -18,13 +18,13 @@ class User < ActiveRecord::Base
   validates :name,  :presence => true,
                     :length   => { :maximum => 50 }
   validates :login, :presence => true,
-                    :length   => {:minimum => 6}
+                    :length   => {:minimum => 6, :message => '最小6位字母和数字！'}
   validates :email, :format     => { :with => email_regex, :message => '电邮格式错误！' , :if => :check_email },
                     :uniqueness => { :scope => :status, :case_sensitive => false, :if => :check_email, :message => '电邮已占用！' }
                     
   validates :password, :presence => true,
                        :confirmation => true,
-                       :length => { :minimum => 6 },
+                       :length => { :minimum => 6, :message => '最小6位字母和数字！' },
                        :if => :validate_password?                      
   validates :user_type,  :presence => true  
   validates_presence_of :status, :inclusion => {:in => %w(active blocked inactive), :message => '用户状态不存在！'}

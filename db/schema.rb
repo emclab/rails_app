@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120703182139) do
+ActiveRecord::Schema.define(:version => 20120819180938) do
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
@@ -34,26 +34,16 @@ ActiveRecord::Schema.define(:version => 20120703182139) do
   create_table "sys_user_positions", :force => true do |t|
     t.string   "position_name"
     t.string   "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "sys_user_rights", :force => true do |t|
-    t.string   "entry_name"
-    t.string   "table_name"
-    t.string   "action"
-    t.string   "user_type"
-    t.string   "user_position"
-    t.string   "matching_column"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "sys_user_types", :force => true do |t|
-    t.string   "type_name"
-    t.string   "type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "sys_action_on_table_id"
+    t.integer  "sys_user_position_id"
+    t.string   "matching_column_name"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
   end
 
   create_table "user_levels", :force => true do |t|

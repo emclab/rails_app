@@ -3,8 +3,8 @@
 FactoryGirl.define do
   
   factory :user_level do 
-    position             "admin"
-    user
+    position             "sales"
+    user_id              1
   end
   
   factory :user do 
@@ -13,11 +13,11 @@ FactoryGirl.define do
     login                 'testuser'
     email                 "test@test.com"
     password              "password1"
-    password_confirmation "password1"
+    password_confirmation {password}
     status                "active"
     user_type             "employee"
     last_updated_by_id    1
-    
+
     #user_levels
     after(:build) do |user|
       user.user_levels << FactoryGirl.build(:user_level, :user => user)
