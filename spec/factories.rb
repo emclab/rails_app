@@ -3,7 +3,7 @@
 FactoryGirl.define do
   
   factory :user_level do 
-    position             "sales"
+    position             "admin"
     user_id              1
   end
   
@@ -15,7 +15,6 @@ FactoryGirl.define do
     password              "password1"
     password_confirmation {password}
     status                "active"
-    user_type             "employee"
     last_updated_by_id    1
 
     #user_levels
@@ -35,14 +34,6 @@ FactoryGirl.define do
     user_id                 1
     user_ip                 '1.2.3.4'
     action_logged           'create a new user in FactoryGirl'
-  end
-  
-  factory :sys_user_right do
-    table_name              'sys_logs'
-    action                  'index'
-    user_position           'admin'
-    matching_column         nil
-    user_type               'employee'
   end
   
 end

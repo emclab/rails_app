@@ -23,11 +23,6 @@ describe User do
     u.should_not be_valid
   end
   
-  it "should reject nil user_type" do
-    u = FactoryGirl.build(:user, :user_type => nil)
-    u.should_not be_valid
-  end
-  
   it "should reject nil password" do
     u = FactoryGirl.build(:user, :password => nil)
     u.should_not be_valid

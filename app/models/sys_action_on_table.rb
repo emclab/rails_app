@@ -1,5 +1,3 @@
 class SysActionOnTable < ActiveRecord::Base
-  
-  has_many :sys_user_positions, :through => :sys_user_rights
-  
+  attr_accessible :action, :table_name
 end

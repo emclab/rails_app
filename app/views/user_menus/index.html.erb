@@ -1,2 +1,2 @@
 
-<%= render 'admin' if position?('admin') %>
+<%= render 'admin' if grant_access?("index", 'users') %>

@@ -3,7 +3,7 @@ class SysLogsController < ApplicationController
   #before_filter :require_signin
   #before_filter :require_employee
   
-  helper_method :has_view_right?
+  helper_method :has_index_right?
   
   def index
     if has_index_right?
@@ -13,25 +13,11 @@ class SysLogsController < ApplicationController
     end
   end
   
-  def sort_by_user_id
-    if has_index_right?
-      @sys_logs = SysLog.order("user_id").paginate(:per_page => 50, :page => params[:page])
-      redirect_to URI.escape(SUBURI + "/view_handler?index=1&url=#{sys_logs_path}")
-    end
-  end
-  
-  def sort_by_ip
-    if has_index_right?
-      @sys_logs = SysLog.order("user_ip").paginate(:per_page => 50, :page => params[:page])
-      redirect_to URI.escape(SUBURI + "/view_handler?index=1&url=#{sys_logs_path}")
-    end    
-  end
-  
   private
   
   # need to add more position for the app
   def has_index_right?
-    grant_access?('sys_logs', 'index', nil)
+    session[:user_privilege].has_action_right?('index', 'sys_logs', nil) unless session[:user_privilege].nil?
   end
   
 end

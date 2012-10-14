@@ -1,3 +1,53 @@
 // Place all the styles related to the user_menus controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@import "layout.css.scss";
+#user_menus_controller {
+  #tabs {
+    border: solid 1px darken($main-color, 20%);
+    margin: 20px 0;
+    padding: 5px 5px;
+    width: $main-width;
+    font-size: $f-size;
+    
+    .menu_left {
+      float: left;
+      width: 46.5%;
+    }
+    
+    .menu_right {
+      float: right;
+      width: 46.5%;
+    }
+    
+    .clear {
+      height: 0;
+      font-size: 1px;
+      margin: 0;
+      padding: 0;
+      line-height: 0;
+      clear: both;
+    }
+
+    ul {
+      margin: 0;
+      padding: 10px;
+      font-size: $f-size;
+      
+      li {
+        padding: 5px 5px;
+        
+        a {
+          color: $main-color;
+          text-decoration: none;
+          padding: 2px;
+          
+          &:hover {
+            color: lighten($main-color, 20%);
+          }
+          
+        }
+      }
+    }
+  }
+}

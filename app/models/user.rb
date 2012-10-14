@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   
   #before_filter :require_admin protects the mass assignment.
   attr_accessible :name, :login, :update_password_checkbox, :password_confirmation, :password, :user_levels_attributes, 
-                  :user_type, :status, :as => :admin
+                  :status, :as => :admin
   
   has_many :user_levels, :dependent => :destroy 
   belongs_to :last_updated_by, :class_name => "User"
@@ -26,14 +26,14 @@ class User < ActiveRecord::Base
                        :confirmation => true,
                        :length => { :minimum => 6, :message => '最小6位字母和数字！' },
                        :if => :validate_password?                      
-  validates :user_type,  :presence => true  
+  #validates :user_type,  :presence => true  
   validates_presence_of :status, :inclusion => {:in => %w(active blocked inactive), :message => '用户状态不存在！'}
   validates_numericality_of :last_updated_by_id, :greater_than => 0
 
   before_save :encrypt_password
 
   scope :user_status, lambda { |us| where('status = ?', us) }
-  scope :user_type, lambda { |ut| where('user_type = ?', ut) }
+  #scope :user_type, lambda { |ut| where('user_type = ?', ut) }
 
   def has_password?(submitted_password)
     encrypted_password == encrypt(submitted_password)

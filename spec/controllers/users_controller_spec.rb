@@ -7,9 +7,7 @@ describe UsersController do
    
   context "test before filters" do
     describe "before filter" do
-      it "should reject by before_filter require_signin and require_admin if not signed in" do
-        session[:admin] = false
-        session[:employee] = true
+      it "should reject by before_filter require_signin if not signed in" do
         u = FactoryGirl.create(:user)     
         get 'index'
         response.should_not have_selector('title', :content => "用户名单")
@@ -18,20 +16,15 @@ describe UsersController do
       end    
       
       it "should reject by before_filter require_signin and require_admin if not signed in" do
-        session[:admin] = true
-        session[:employee] = false
-        u = FactoryGirl.create(:user)     
+        user_group = FactoryGirl.create(:sys_user_group, :user_group_name => 'ceo')
+        table_right = FactoryGirl.create(:sys_action_on_table, :action => 'index', :table_name => 'sys_logs')
+        right = FactoryGirl.create(:sys_user_right, :sys_user_group_id => user_group.id, :sys_action_on_table_id => table_right.id, :matching_column_name => nil)
+        u = FactoryGirl.create(:user)
+        ul = FactoryGirl.create(:user_level, :user_id => u.id, :position => 'ceo')      
+        session[:user_privilege] = UserPrivilege.new(u.id)          
         get 'index'
         response.should_not have_selector('title', :content => "用户名单")
         response.code.should_not eq(200)        
-        assigns(:users).should_not eq([u])
-      end    
-
-      it "should reject by before_filter require_signin and require_admin if not signed in" do
-        u = FactoryGirl.create(:user)     
-        get 'index'
-        response.should_not have_selector('title', :content => "用户名单")
-        response.code.should_not eq('200')        
         assigns(:users).should_not eq([u])
       end    
                   
@@ -42,33 +35,32 @@ describe UsersController do
     before(:each) do
     #the following recognizes that there is a before filter without execution of it.
       controller.should_receive(:require_signin)
-      controller.should_receive(:require_employee)
-      controller.should_receive(:require_admin)
+        user_group = FactoryGirl.create(:sys_user_group, :user_group_name => 'ceo')
+        table_right = FactoryGirl.create(:sys_action_on_table, :action => 'index', :table_name => 'users')
+        right = FactoryGirl.create(:sys_user_right, :sys_user_group_id => user_group.id, :sys_action_on_table_id => table_right.id, :matching_column_name => nil)
+        @u = FactoryGirl.create(:user)
+        ul = FactoryGirl.create(:user_level, :user_id => @u.id, :position => 'ceo')      
+        session[:user_privilege] = UserPrivilege.new(@u.id)
     end
          
     describe "'index'" do
       it "returns http success" do 
-        u = FactoryGirl.create(:user)  
+
         get 'index'
         response.should be_success
-        assigns(:users).should eq([u])
+        assigns(:users).should eq([@u])
       end
     end
 
     describe "'show'" do
       it "returns http success" do
-        u0 = FactoryGirl.create(:user, :email => nil)
-        u = FactoryGirl.create(:user, :last_updated_by_id => u0.id)
-        ul = FactoryGirl.create(:user_level, :user_id => u.id)
-        get 'show', :id => u.id
+        get 'show', :id => @u.id
         response.should be_success
       end
     end
 
     describe "'new'" do
       it "returns http success" do
-        u = FactoryGirl.build(:user)
-        ul = FactoryGirl.build(:user_level, :user_id => u.id)
         get 'new'
         response.should be_success
       end
@@ -77,26 +69,25 @@ describe UsersController do
     describe "'create'" do
     
       it "should render new if data is missing the user position" do
-        u = FactoryGirl.attributes_for(:user, :user_levels_attributes => { '1' => {:position => ''}}) 
-        get 'create', :user => u
+        u1 = FactoryGirl.attributes_for(:user, :user_levels_attributes => { '1' => {:position => ''}}) 
+        get 'create', :user => u1
         response.should render_template('new')
       end
     
       it "returns http success with a valid input and increase the user count by 1" do
-        session[:user_id] = 1
-        u = FactoryGirl.attributes_for(:user, :user_levels_attributes => { '1' => {:position => 'ceo'}})
-        #u = FactoryGirl.attributes_for(:user, :user_levels_attributes => [{:position => 'ceo'}])  #works without '1' => as well.
+        session[:user_id] = @u.id
+        u1 = FactoryGirl.attributes_for(:user, :user_levels_attributes => { '1' => {:position => 'ceo'}})
         lambda do
-          get 'create', :user => u
+          get 'create', :user => u1
           response.should redirect_to URI.escape("/view_handler?index=0&msg=用户已保存！")
         end.should change(User, :count).by(1)
       end
     
       it "returns http success with a valid user level input and increase the user level count by 1" do
-        session[:user_id] = 1
-        u = FactoryGirl.attributes_for(:user, :user_levels_attributes => [ {:position => 'admin'}])
+        session[:user_id] = @u.id
+        u1 = FactoryGirl.attributes_for(:user, :user_levels_attributes => [ {:position => 'admin'}])
         lambda do
-          get 'create', :user => u
+          get 'create', :user => u1
           response.should redirect_to URI.escape("/view_handler?index=0&msg=用户已保存！")
         end.should change(UserLevel, :count).by(1)
       end    
@@ -104,24 +95,22 @@ describe UsersController do
 
     describe "'edit'" do
       it "returns http success with a valid user" do
-        u = FactoryGirl.create(:user)
-        get 'edit', :id => u.id
+        u1 = FactoryGirl.create(:user, :email => 'b@example11.com')
+        get 'edit', :id => u1.id
         response.should be_success
       end
     end
 
     describe "'update'" do
-      it "returns success with a valid update" do
-        u = FactoryGirl.create(:user)      
-        session[:user_id] = 1
-        get 'update', :id => u.id, :user => {:name => 'a new name'}
+      it "returns success with a valid update" do    
+        session[:user_id] = @u.id
+        get 'update', :id => @u.id, :user => {:name => 'a new name'}
         response.should redirect_to URI.escape("/view_handler?index=0&msg=更改已保存！")
       end
     
       it "would be OK to update the user level" do
-        u = FactoryGirl.create(:user)      
-        session[:user_id] = u.id
-        get 'update', :id => u.id, :user => {:user_levels_attributes => [{:position => 'a new name'}]}
+        session[:user_id] = @u.id
+        get 'update', :id => @u.id, :user => {:user_levels_attributes => [{:position => 'a new name'}]}
         response.should redirect_to URI.escape("/view_handler?index=0&msg=更改已保存！")
       end    
     end

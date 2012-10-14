@@ -1,7 +1,7 @@
 # encoding: utf-8
 class UsersController < ApplicationController
   #before_filter :require_signin
-  before_filter :require_employee 
+  #before_filter :require_employee 
   before_filter :require_admin  
   
   helper_method :return_user_positions, :return_user_type_name, :return_user_type, :return_user_status, 

@@ -7,20 +7,24 @@
   <%= f.input :password, :label => '密码：', :hint => '6位或以上'  %>
   <%= f.input :password_confirmation, :label => '验证密码：' %>
   </div>
-  <div style="padding-left:12px">属性：&nbsp;&nbsp;<%= return_user_type_name(@user.user_type) %></div>
   &nbsp;&nbsp;用户职位：
   <div id="user_user_levels">
   <%= f.fields_for :user_levels, @user.user_levels.first do |builder| %>
-    <p><%= builder.input :position, :collection => return_position, :prompt => "选职位", 
-                    :label => false, :include_blank => true, :selected => @user.user_levels.first.position %>
+    <p><%= builder.input :position, :collection => return_user_group, :prompt => "选职位", :label_method => :short_note, :value_method => :user_group_name, 
+                    :label => "职位：", :selected => @user.user_levels.first.position, :include_blank => true %>
+       <%= builder.input :manager, :collection => return_user_group, :prompt => "选主管", :label_method => :short_note, :value_method => :user_group_name, 
+                      :label => "主管职位：", :selected => @user.user_levels.first.manager, :include_blank => true %>              
     </p>  
   <% end %> 
 	
   <% @user.user_levels.offset(1).each do |level| %>	 
     <%= f.fields_for :user_levels, level do |builder| %>
-      <p><%= builder.input :position, :collection => return_position, :prompt => "选职位", 
-                      :label => false, :include_blank => true, :selected => level.position %>
+      <p><%= builder.input :position, :collection => return_user_group, :prompt => "选职位", :label_method => :short_note, :value_method => :user_group_name, 
+                    :label => "职位：", :selected => level.position %>
+         <%= builder.input :manager, :collection => return_user_group, :prompt => "选主管", :label_method => :short_note, :value_method => :user_group_name, 
+                      :label => "主管职位：", :selected => level.manager %>                
       	删除: <%= builder.check_box :_destroy %>
+      	
       </p>  
     <% end %> 
   <% end if @user.user_levels.count > 1 %>

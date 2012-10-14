@@ -1,6 +1,8 @@
 <div class="fields">
-  <%= f.input :position, :collection => return_position, :prompt => "选职位", 
-                      :label => false, :include_blank => true, :selected => i_id %>
-  <%= link_to_remove_fields "remove", f %>
+  <%= f.input :position, :collection => return_user_group, :prompt => "选职位", :label_method => :short_note, :value_method => :user_group_name, 
+                      :label => "职位：", :include_blank => true %>
+  <%= f.input :manager, :collection => return_user_group, :prompt => "选主管", :label_method => :short_note, :value_method => :user_group_name, 
+                    :label => "主管职位：", :include_blank => true %>                    
+  <%= link_to_remove_fields "删除", f %>
 </div>
 

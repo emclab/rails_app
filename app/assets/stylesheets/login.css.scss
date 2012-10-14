@@ -1,0 +1,38 @@
+@import "layout.css.scss";
+#login_field {
+  background-color: $main-bk-color;
+  color: $main-color;
+  padding: 10px 10px;
+  border: solid 1px darken($main-color, 20%);
+  width: $main-width;
+  height: 260px;
+  @include rounded-corners(10px);
+  font-size: $f-size /1.2;
+  
+  input {
+    border: 1px solid darken($main-color, 20%);
+    background: $main-bk-color;
+  }
+  
+  .button {
+    border: 1px solid darken($main-color, 20%);
+    background: lighten($main-color, 40%);
+    border-radius: 3px;
+    color: darken($main-color, 20%);
+    padding: 2px 8px;
+    font-size: bold;
+  }
+  
+  .button:hover {
+    border: 1px darken($main-color, 20%);
+    background: lighten($main-color, 20%);
+    padding: 2px 8px;
+  }
+  label {
+    display: block;
+    width: 90px;
+    float: left;
+    margin: 2px 4px 6px 4px;
+    text-align: right;
+  }
+}

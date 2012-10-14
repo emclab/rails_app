@@ -4,24 +4,20 @@
 
 <table>
   <tr>
-  	<th></th>
   	<th>#</th>
     <th>名字</th>
     <th>登录名</th>
     <th>状态</th>
-    <th>属性</th>
     <th>职位</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr>
-  <% for user in @users %>
+  <% @users.each do |user| %>
     <tr>
-      <td><%= link_to "View", SUBURI + "/view_handler?index=1&url=#{user_path(user)}" %></td> 
-      <td><%= user.id %></td>   	
+      <td><%= link_to user.id.to_s, SUBURI + "/view_handler?index=1&url=#{user_path(user)}" %></td>  	
       <td><%= user.name %></td>
       <td><%= user.login %></td>
       <td><%= user.status %></td>
-      <td><%= user.user_type %></td>
       <td><%= return_user_positions(user) %></td>
       <td><%= link_to "Edit", SUBURI + "/view_handler?index=1&url=#{edit_user_path(user)}" %></td>
     </tr>

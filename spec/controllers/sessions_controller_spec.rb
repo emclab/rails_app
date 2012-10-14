@@ -52,5 +52,5 @@ describe SessionsController do
       response.should redirect_to(signin_path)
     end
   end
-
+  
 end

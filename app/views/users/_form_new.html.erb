@@ -3,11 +3,12 @@
   <%= f.input :login, :label => '登录名：', :hint => '6位或以上' %>
   <%= f.input :password, :label => '密码：', :hint => '6位或以上', :input_html => {:id => 'new_user_password'} %>
   <%= f.input :password_confirmation, :label => '验证密码：' %>  
-  <%= f.input :user_type, :label => '用户属性：', :collection => return_user_type, :include_blank => true %>
-  &nbsp;&nbsp;用户职位：
+  &nbsp;&nbsp;用户职位及主管：
   <%= f.fields_for :user_levels, @user.user_levels.first do |builder| %>
-    <p><%= builder.input :position, :collection => return_position, :prompt => "选职位", 
-                    :label => false, :include_blank => true %>
+    <p><%= builder.input :position, :collection => return_user_group, :prompt => "选职位", :label_method => :short_note, :value_method => :user_group_name, 
+                    :label => "职位：", :include_blank => true %>
+       <%= builder.input :manager, :collection => return_user_group, :prompt => "选主管", :label_method => :short_note, :value_method => :user_group_name, 
+                    :label => "主管职位：", :include_blank => true %>
     </p>  
   <% end %>   
   <p><%= link_to_add_fields "加选职位", f, :user_levels %></p>

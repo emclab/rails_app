@@ -1,0 +1,47 @@
+@import "layout.css.scss";
+.emclab_pagination {
+  background: white;
+  cursor: default;
+  /* self-clearing method: */ }
+  .emclab_pagination a, .emclab_pagination span, .emclab_pagination em {
+    padding: 0.2em 0.5em;
+    display: block;
+    float: left;
+    margin-right: 1px; }
+  .emclab_pagination .disabled {
+    color: #777777;
+    border: 1px solid #dddddd; }
+  .emclab_pagination .current {
+    font-style: normal;
+    font-weight: bold;
+    background: lighten($main-color, 20%);
+    color: white;
+    border: 1px solid lighten($main-color, 20%); }
+  .emclab_pagination a {
+    text-decoration: none;
+    color: lighten($main-color, 20%);
+    border: 1px solid lighten($main-color, 20%); }
+    .emclab_pagination a:hover, .emclab_pagination a:focus {
+      color: #000033;
+      border-color: #000033; }
+  .emclab_pagination .page_info {
+    background: $main-color;
+    color: white;
+    padding: 0.4em 0.6em;
+    width: 22em;
+    margin-bottom: 0.3em;
+    text-align: center; }
+    .emclab_pagination .page_info b {
+      color: #000033;
+      background: #6aa6ed;
+      padding: 0.1em 0.25em; }
+  .emclab_pagination:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden; }
+  * html .emclab_pagination {
+    height: 1%; }
+  *:first-child + html .emclab_pagination {
+    overflow: hidden; }

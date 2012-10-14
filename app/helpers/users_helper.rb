@@ -1,14 +1,6 @@
 # encoding: utf-8
 module UsersHelper
   
-  def return_active_customer
-    Customer.active_cust.order("id DESC")  
-  end
-    
-  def return_employee(*list_position)
-    User.where("user_type = ? AND status = ?", 'employee', 'active').joins(:user_levels).where(:user_levels => {:position => list_position })
-  end
-  
   def return_user_status
     [['在职', 'active'], ['禁止登录','blocked'], ['离职', 'inactive']]
   end
@@ -24,25 +16,8 @@ module UsersHelper
     end
   end
 
-  def return_position
-    [ ['财会','acct'], ['系统管理员','admin'], ['工程副总','vp_eng'], ['市场副总', 'vp_sales'], ['总经理','coo'],['董事长','ceo']]
-  end
-  
-  def return_position_name(position)
-    case position
-    when 'acct'
-      '财会'
-    when 'admin'
-      '系统管理员'
-    when 'vp_eng'
-      '工程副总'
-    when 'vp_sales'
-      '市场副总'
-    when 'coo'
-      '总经理'
-    when 'ceo'
-      '董事长'
-    end
+  def return_user_group
+    SysUserGroup.order("user_group_name")
   end
       
   #remove user position in system user creation

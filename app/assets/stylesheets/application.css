@@ -5,3 +5,10 @@
  *= require_self
  *= require_tree . 
 */
+
+@import "layout.css.scss";
+@import "user_menus.css.scss";
+@import "login.css.scss";
+@import "paginate.css.scss";
+@import "users.css.scss";
+@import "simple_form.css.scss";

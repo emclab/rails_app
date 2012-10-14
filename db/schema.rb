@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120819180938) do
+ActiveRecord::Schema.define(:version => 20121014003224) do
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
@@ -23,6 +23,13 @@ ActiveRecord::Schema.define(:version => 20120819180938) do
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
+  create_table "sys_action_on_tables", :force => true do |t|
+    t.string   "action"
+    t.string   "table_name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "sys_logs", :force => true do |t|
     t.datetime "log_date"
     t.integer  "user_id"
@@ -31,16 +38,30 @@ ActiveRecord::Schema.define(:version => 20120819180938) do
     t.string   "action_logged"
   end
 
-  create_table "sys_user_positions", :force => true do |t|
-    t.string   "position_name"
-    t.string   "position"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+  create_table "sys_module_mappings", :force => true do |t|
+    t.integer  "sys_module_id"
+    t.integer  "sys_user_group_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  create_table "sys_modules", :force => true do |t|
+    t.string   "module_name"
+    t.string   "module_group_name"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  create_table "sys_user_groups", :force => true do |t|
+    t.string   "user_group_name"
+    t.string   "short_note"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "sys_user_rights", :force => true do |t|
     t.integer  "sys_action_on_table_id"
-    t.integer  "sys_user_position_id"
+    t.integer  "sys_user_group_id"
     t.string   "matching_column_name"
     t.datetime "created_at",             :null => false
     t.datetime "updated_at",             :null => false
@@ -51,6 +72,7 @@ ActiveRecord::Schema.define(:version => 20120819180938) do
     t.string   "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "manager"
   end
 
   create_table "users", :force => true do |t|
@@ -60,7 +82,6 @@ ActiveRecord::Schema.define(:version => 20120819180938) do
     t.string   "encrypted_password"
     t.string   "salt"
     t.string   "status",             :default => "active"
-    t.string   "user_type"
     t.integer  "last_updated_by_id"
     t.datetime "created_at"
     t.datetime "updated_at"

@@ -26,8 +26,8 @@ class SessionsController < ApplicationController
       session[:user_id]  = user.id
       session[:user_name] = user.name
       session[:last_seen] = Time.now.utc   #db uses UTC time for timestamp
-
-      sign_in(user)
+      session[:user_privilege] = UserPrivilege.new(user.id)
+      #sign_in(user)
       #log 
       sys_logger('登录') unless Rails.env.test?       
       redirect_to user_menus_path

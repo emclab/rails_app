@@ -30,16 +30,17 @@ class ApplicationController < ActionController::Base
   end
   
   #before_filter in controller to see if the user is the company employee
-  def require_employee
-    if !user_type?('employee') 
-      flash.now[:error] = "登录被拒!"
-      redirect_to root_path
-    end
-  end
+#  def require_employee
+#    if !user_type?('employee') 
+#      flash.now[:error] = "登录被拒!"
+ #     redirect_to root_path
+#    end
+#  end
   
   #before_filter in controller to see if the user is admin
   def require_admin
-    position?('admin')
+    grant_access?("index", "users")
+    #position?('admin')
   end
   
   #before_filter in controller to check if user signed in.
@@ -55,11 +56,12 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
   
-  def sign_in(user)
+  #def sign_in(user)
     #cookies.permanent.signed[:remember_token] = [user.id, user.salt]
-    set_user_rights
-  end  
+  #  set_user_rights
+ # end  
 
+  
   def signed_in?
     !current_user.nil?
     #!session[:user_id].nil? || session[:user_id] <= 0
@@ -99,25 +101,5 @@ class ApplicationController < ActionController::Base
                      :action_logged => action_logged}, :as => :logger)
     log.save!
   end
-  
-  #consult sys_user_right to grant access to table
-  def grant_access?(table_name, action, obj)
-    #'table name' is the name of table upon which the user is requesting the access for 'action'
-    # 'action' is the action the user is going to take upon the obj
-    #'obj' is the record upon which the user is requesting the acess for 'action'. obj can be nil.
-    return false if table_name.blank? || action.blank? || session[:user_type].blank? || session[:user_positions].blank?
-    pos = []
-    # return position array in sys user right table
-    SysUserRight.where("table_name = ? AND action = ? AND user_type = ?", table_name, action, session[:user_type]).each do |p|
-      return false if p.matching_column.present? && obj.blank?
-      if p.matching_column.blank?
-        pos << p.user_position 
-      else
-        pos << p.user_position if obj.send(p.matching_column) == session[:user_id]
-      end 
-    end 
-    # return array intersection
-    (pos & session[:user_positions]).present?
-  end
-  
+ 
 end

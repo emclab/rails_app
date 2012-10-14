@@ -29,12 +29,7 @@ RailsApp::Application.routes.draw do
   # first created ->  highest priority.
   
   resource :session
-  resources :sys_logs, :only => [:index] do
-    collection do
-      get :sort_by_user_id
-      get :sort_by_ip      
-    end 
-  end
+  resources :sys_logs, :only => [:index] 
   resources :users do
     resources :user_levels
   end
