@@ -15,8 +15,8 @@ describe "LoginLinks" do
     end
     
     it "should login in with right user name and password" do
-      #ul = FactoryGirl.attributes(:user_level, :position => 'admin', :user_id => user.id)
-      user = FactoryGirl.create(:user, :login => 'tester1', :password => 'password', 
+      ul = FactoryGirl.create(:user_level)
+      user = FactoryGirl.create(:user, :user_levels => [ul], :login => 'tester1', :password => 'password',
                                 :password_confirmation => 'password')
        
       lambda do
@@ -34,8 +34,8 @@ describe "LoginLinks" do
   describe "user page" do
     
     before(:each) do
-      #ul = FactoryGirl.build(:user_level, :position => 'admin')
-      user = FactoryGirl.create(:user, :login => 'test@example.com', :password => 'password', :password_confirmation => 'password')
+      ul = FactoryGirl.build(:user_level)
+      user = FactoryGirl.create(:user, :user_levels => [ul], :login => 'test@example.com', :password => 'password', :password_confirmation => 'password')
       
       visit '/'
       fill_in "login", :with => 'test@example.com'

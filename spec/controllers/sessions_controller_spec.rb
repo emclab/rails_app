@@ -16,27 +16,31 @@ describe SessionsController do
   
   describe "GET 'create'" do
     it "returns http success" do
-      u = FactoryGirl.create(:user)
+      ul = FactoryGirl.create(:user_level)
+      u = FactoryGirl.create(:user, :user_levels => [ul])
       get 'create', :user => {:login => u.login, :password => u.password}
       response.should be_success
     end
     
     it "should display error for wrong login/password" do
-      u = FactoryGirl.create(:user)
+      ul = FactoryGirl.create(:user_level)
+      u = FactoryGirl.create(:user, :user_levels => [ul])
       get 'create', :user => {:login => u.login, :password => u.password + 'ab'}
       flash.now[:error].should eq "登录名/密码错误！"
       response.should render_template('new')
     end
     
     it "should reject nil login" do
-      u = FactoryGirl.create(:user)
+      ul = FactoryGirl.create(:user_level)
+      u = FactoryGirl.create(:user, :user_levels => [ul])
       get 'create', :user => {:login => nil, :password => u.password }
       flash.now[:error].should eq "登录名/密码错误！"
       response.should render_template('new')
     end  
     
     it "should reject nil password" do
-      u = FactoryGirl.create(:user)
+      ul = FactoryGirl.create(:user_level)
+      u = FactoryGirl.create(:user, :user_levels => [ul])
       get 'create', :user => {:login => u.login, :password => nil}
       flash.now[:error].should eq "登录名/密码错误！"
       response.should render_template('new')
@@ -46,11 +50,12 @@ describe SessionsController do
 
   describe "GET 'destroy'" do
     it "returns http success" do
-      u = FactoryGirl.create(:user)
+      ul = FactoryGirl.create(:user_level)
+      u = FactoryGirl.create(:user, :user_levels => [ul])
       get 'destroy', :user => {:login => u.login, :password => u.password}
       flash.now[:notice].should eq "退出了!"
       response.should redirect_to(signin_path)
     end
   end
-  
+
 end

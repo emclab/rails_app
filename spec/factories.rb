@@ -18,9 +18,9 @@ FactoryGirl.define do
     last_updated_by_id    1
 
     #user_levels
-    after(:build) do |user|
-      user.user_levels << FactoryGirl.build(:user_level, :user => user)
-    end
+    #after(:build) do |user|
+    #  user.user_levels << FactoryGirl.build(:user_level, :user => user)
+    #end
   end
 
   factory :session do

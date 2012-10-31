@@ -4,32 +4,38 @@ require 'spec_helper'
 describe User do
   
   it "should create a new user" do
-    u = FactoryGirl.build :user
+    ul = FactoryGirl.build(:user_level)
+    u = FactoryGirl.build(:user, :user_levels => [ul])
     u.should be_valid
   end
   
   it "should reject nil login" do
-    u = FactoryGirl.build(:user, :login => nil)
+    ul = FactoryGirl.build(:user_level)
+    u = FactoryGirl.build(:user, :login => nil, :user_levels => [ul])
     u.should_not be_valid
   end
   
   it "should reject nil status" do
-    u = FactoryGirl.build(:user, :status => nil)
+    ul = FactoryGirl.build(:user_level)
+    u = FactoryGirl.build(:user, :status => nil, :user_levels => [ul])
     u.should_not be_valid
   end
   
   it "should reject nil name" do
-    u = FactoryGirl.build(:user, :name => nil)
+    ul = FactoryGirl.build(:user_level)
+    u = FactoryGirl.build(:user, :name => nil, :user_levels => [ul])
     u.should_not be_valid
   end
   
   it "should reject nil password" do
-    u = FactoryGirl.build(:user, :password => nil)
+    ul = FactoryGirl.build(:user_level)
+    u = FactoryGirl.build(:user, :password => nil, :user_levels => [ul])
     u.should_not be_valid
   end
   
   it "should reject -0- last_updated_by_id" do
-    u = FactoryGirl.build :user, :last_updated_by_id => 0
+    ul = FactoryGirl.build(:user_level)
+    u = FactoryGirl.build(:user, :last_updated_by_id => 0, :user_levels => [ul])
     u.should_not be_valid
   end
   

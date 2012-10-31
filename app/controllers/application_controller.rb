@@ -71,8 +71,17 @@ class ApplicationController < ActionController::Base
     #cookies.delete(:remember_token)
     self.current_user = nil
     reset_session
-  end  
-  
+  end
+
+  def assign_user_rights
+    SysUserRight.joins(:sys_user_group).where(:sys_user_groups => {:user_group_name => session[:user_privilege].user_groups}).each do |right|
+      action_on_table = right.sys_action_on_table
+      session[(action_on_table.action + '_' + action_on_table.table_name).to_sym] = true if action_on_table.action[-4..-1] == '_all'   #ex, session[:index_all_users], for table
+      session[(action_on_table.action + '_' + action_on_table.table_name + '_'  + right.accessable_column_name).to_sym] =
+                true if right.accessable_column_name.present?   #ex, session[:index_users_each_column] (full access), session[:index_users_name], for columns in a record
+    end
+  end
+
   #remember the viewing history. :url and :index passed in from the link as params.
   # :index =0 means backword, :index=1 means forward. When forwarding, url is the url to save for back.
   def view_handler

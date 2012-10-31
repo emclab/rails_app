@@ -27,8 +27,8 @@ class SessionsController < ApplicationController
       session[:user_name] = user.name
       session[:last_seen] = Time.now.utc   #db uses UTC time for timestamp
       session[:user_privilege] = UserPrivilege.new(user.id)
-      #sign_in(user)
-      #log 
+      assign_user_rights()
+      #log
       sys_logger('登录') unless Rails.env.test?       
       redirect_to user_menus_path
     else
@@ -44,5 +44,5 @@ class SessionsController < ApplicationController
     sign_out
     redirect_to signin_path, :notice => "退出了!"
   end
-  
+
 end

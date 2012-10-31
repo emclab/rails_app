@@ -8,7 +8,8 @@ describe UsersController do
   context "test before filters" do
     describe "before filter" do
       it "should reject by before_filter require_signin if not signed in" do
-        u = FactoryGirl.create(:user)     
+        ul = FactoryGirl.create(:user_level)
+        u = FactoryGirl.create(:user, :user_levels => [ul])
         get 'index'
         response.should_not have_selector('title', :content => "用户名单")
         response.code.should_not eq('200')
@@ -19,8 +20,8 @@ describe UsersController do
         user_group = FactoryGirl.create(:sys_user_group, :user_group_name => 'ceo')
         table_right = FactoryGirl.create(:sys_action_on_table, :action => 'index', :table_name => 'sys_logs')
         right = FactoryGirl.create(:sys_user_right, :sys_user_group_id => user_group.id, :sys_action_on_table_id => table_right.id, :matching_column_name => nil)
-        u = FactoryGirl.create(:user)
-        ul = FactoryGirl.create(:user_level, :user_id => u.id, :position => 'ceo')      
+        ul = FactoryGirl.create(:user_level, :position => 'ceo')
+        u = FactoryGirl.create(:user, :user_levels => [ul])
         session[:user_privilege] = UserPrivilege.new(u.id)          
         get 'index'
         response.should_not have_selector('title', :content => "用户名单")
@@ -38,8 +39,10 @@ describe UsersController do
         user_group = FactoryGirl.create(:sys_user_group, :user_group_name => 'ceo')
         table_right = FactoryGirl.create(:sys_action_on_table, :action => 'index', :table_name => 'users')
         right = FactoryGirl.create(:sys_user_right, :sys_user_group_id => user_group.id, :sys_action_on_table_id => table_right.id, :matching_column_name => nil)
-        @u = FactoryGirl.create(:user)
-        ul = FactoryGirl.create(:user_level, :user_id => @u.id, :position => 'ceo')      
+        ul = FactoryGirl.create(:user_level, :user_id => 1, :position => 'sales')
+        @uu =  FactoryGirl.create(:user, :user_levels => [ul])
+        ul1 = FactoryGirl.create(:user_level, :user_id => 2, :position => 'ceo')
+        @u = FactoryGirl.create(:user, :user_levels => [ul1], :last_updated_by_id => @uu.id, :email => "aa@example.com")
         session[:user_privilege] = UserPrivilege.new(@u.id)
     end
          
@@ -48,7 +51,7 @@ describe UsersController do
 
         get 'index'
         response.should be_success
-        assigns(:users).should eq([@u])
+        assigns(:users).should eq([@u, @uu])
       end
     end
 
@@ -95,7 +98,8 @@ describe UsersController do
 
     describe "'edit'" do
       it "returns http success with a valid user" do
-        u1 = FactoryGirl.create(:user, :email => 'b@example11.com')
+        ull = FactoryGirl.create(:user_level)
+        u1 = FactoryGirl.create(:user, :email => 'b@example11.com', :user_levels => [ull])
         get 'edit', :id => u1.id
         response.should be_success
       end

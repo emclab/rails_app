@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121014003224) do
+ActiveRecord::Schema.define(:version => 20121030155356) do
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
@@ -23,12 +23,18 @@ ActiveRecord::Schema.define(:version => 20121014003224) do
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
+# Could not dump table "sqlite_stat1" because of following StandardError
+#   Unknown type '' for column 'tbl'
+
   create_table "sys_action_on_tables", :force => true do |t|
     t.string   "action"
     t.string   "table_name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "sys_action_on_tables", ["action"], :name => "index_sys_action_on_tables_on_action"
+  add_index "sys_action_on_tables", ["table_name"], :name => "index_sys_action_on_tables_on_table_name"
 
   create_table "sys_logs", :force => true do |t|
     t.datetime "log_date"
@@ -65,7 +71,12 @@ ActiveRecord::Schema.define(:version => 20121014003224) do
     t.string   "matching_column_name"
     t.datetime "created_at",             :null => false
     t.datetime "updated_at",             :null => false
+    t.string   "accessable_column_name"
   end
+
+  add_index "sys_user_rights", ["accessable_column_name"], :name => "index_sys_user_rights_on_accessable_column_name"
+  add_index "sys_user_rights", ["sys_action_on_table_id"], :name => "index_sys_user_rights_on_sys_action_on_table_id"
+  add_index "sys_user_rights", ["sys_user_group_id"], :name => "index_sys_user_rights_on_sys_user_group_id"
 
   create_table "user_levels", :force => true do |t|
     t.integer  "user_id"

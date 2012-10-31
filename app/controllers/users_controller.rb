@@ -55,14 +55,14 @@ class UsersController < ApplicationController
   #return user position string
   def return_user_positions(user)
     position = nil
-    user.user_levels.each do |ul| 
+    user.user_levels.each do |ul|
       if position.nil?
         position = return_position_name(ul.position)
       else
         position = position + ', ' + return_position_name(ul.position)
       end
     end
-    return position      
+    return position
   end
 
   def return_user_status
