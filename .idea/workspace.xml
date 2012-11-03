@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="45def2d2-9849-43c5-a315-b5ba67c0ca71" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/sys_action_on_table.rb" afterPath="$PROJECT_DIR$/app/models/sys_action_on_table.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/sys_module.rb" afterPath="$PROJECT_DIR$/app/models/sys_module.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/sys_module_mapping.rb" afterPath="$PROJECT_DIR$/app/models/sys_module_mapping.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/sys_user_group.rb" afterPath="$PROJECT_DIR$/app/models/sys_user_group.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/sys_user_right.rb" afterPath="$PROJECT_DIR$/app/models/sys_user_right.rb" />
-    </list>
+    <list default="true" id="45def2d2-9849-43c5-a315-b5ba67c0ca71" name="Default" comment="" />
     <ignored path="rails_app.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />

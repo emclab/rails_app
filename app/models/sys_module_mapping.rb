@@ -1,3 +1,4 @@
 class SysModuleMapping < ActiveRecord::Base
-  #attr_accessible :sys_module_id, :sys_user_group_id
+  belongs_to :sys_user_group
+  belongs_to :sys_module
 end
