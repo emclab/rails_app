@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121030155356) do
+ActiveRecord::Schema.define(:version => 20121103200832) do
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
@@ -71,10 +71,9 @@ ActiveRecord::Schema.define(:version => 20121030155356) do
     t.string   "matching_column_name"
     t.datetime "created_at",             :null => false
     t.datetime "updated_at",             :null => false
-    t.string   "accessable_column_name"
+    t.string   "accessible_column_name"
   end
 
-  add_index "sys_user_rights", ["accessable_column_name"], :name => "index_sys_user_rights_on_accessable_column_name"
   add_index "sys_user_rights", ["sys_action_on_table_id"], :name => "index_sys_user_rights_on_sys_action_on_table_id"
   add_index "sys_user_rights", ["sys_user_group_id"], :name => "index_sys_user_rights_on_sys_user_group_id"
 
