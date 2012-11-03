@@ -81,22 +81,22 @@ class UserPrivilege
      return rights
   end
   
-  def has_action_right?(action, table_name, accessable_column_name = nil, record = nil)
+  def has_action_right?(action, table_name, accessible_column_name = nil, record = nil)
     #record is the database record that needs to be accessed
     #accessable_column_name is the name of columns upon which the user's right will be evaluated.
     return false if action.nil? || table_name.nil?
     if @user_action_rights.include?([action, table_name])
-      if record.nil? && accessable_column_name.nil?
+      if record.nil? && accessible_column_name.nil?
         return true
-      elsif record.present? && accessable_column_name.nil?
+      elsif record.present? && accessible_column_name.nil?
         #check if the value of matching_column in record is equal to the @user id. There may be more than one matching_columns
         action_record = SysActionOnTable.where("action = ? AND table_name = ?", action, table_name).first  # ONLY have one record
         SysUserRight.joins(:sys_user_group).where("sys_user_rights.sys_action_on_table_id = ?", action_record.id).where(:sys_user_groups => {:user_group_name => @user_groups}).each do |right|
           return true if right.matching_column_name.present? && has_matching_column?(right.matching_column_name, record)
         end
-      elsif record.nil? && accessable_column_name.present?
+      elsif record.nil? && accessible_column_name.present?
         action_record = SysActionOnTable.where("action = ? AND table_name = ?", action, table_name).first
-        result = SysUserRight.joins(:sys_user_group).where("sys_user_rights.sys_action_on_table_id =? AND sys_user_rights.accessable_column_name = ?", action_record.id, accessable_column_name).
+        result = SysUserRight.joins(:sys_user_group).where("sys_user_rights.sys_action_on_table_id =? AND sys_user_rights.accessible_column_name = ?", action_record.id, accessible_column_name).
                                                      where(:sys_user_groups => {:user_group_name => @user_groups})
         return true if result.present?
       else

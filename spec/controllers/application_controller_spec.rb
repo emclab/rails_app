@@ -50,21 +50,21 @@ describe ApplicationController do
       session[:user_privilege].has_action_right?('index', 'users', nil, u).should be_true
     end
 
-    it "should return true with correct accessable column name" do
+    it "should return true with correct accessible column name" do
       user_group = FactoryGirl.create(:sys_user_group, :user_group_name => 'ceo')
       table_right = FactoryGirl.create(:sys_action_on_table, :action => 'index', :table_name => 'users')
-      right1 = FactoryGirl.create(:sys_user_right, :sys_user_group_id => user_group.id, :sys_action_on_table_id => table_right.id, :accessable_column_name => "customer_name")
-      right = FactoryGirl.create(:sys_user_right, :sys_user_group_id => user_group.id, :sys_action_on_table_id => table_right.id, :accessable_column_name => "user_name")
+      right1 = FactoryGirl.create(:sys_user_right, :sys_user_group_id => user_group.id, :sys_action_on_table_id => table_right.id, :accessible_column_name => "customer_name")
+      right = FactoryGirl.create(:sys_user_right, :sys_user_group_id => user_group.id, :sys_action_on_table_id => table_right.id, :accessible_column_name => "user_name")
       ul = FactoryGirl.create(:user_level, :user_id => 1, :position => 'ceo')
       u = FactoryGirl.create(:user, :user_levels => [ul])
       session[:user_privilege] = UserPrivilege.new(u.id)
       session[:user_privilege].has_action_right?('index', 'users', "user_name", nil).should be_true
     end
 
-    it "should return false if accessable column name does not match" do
+    it "should return false if accessible column name does not match" do
       user_group = FactoryGirl.create(:sys_user_group, :user_group_name => 'ceo')
       table_right = FactoryGirl.create(:sys_action_on_table, :action => 'index', :table_name => 'users')
-      right = FactoryGirl.create(:sys_user_right, :sys_user_group_id => user_group.id, :sys_action_on_table_id => table_right.id, :accessable_column_name => "user_name")
+      right = FactoryGirl.create(:sys_user_right, :sys_user_group_id => user_group.id, :sys_action_on_table_id => table_right.id, :accessible_column_name => "user_name")
       ul = FactoryGirl.create(:user_level, :user_id => 1, :position => 'ceo')
       u = FactoryGirl.create(:user, :user_levels => [ul])
       session[:user_privilege] = UserPrivilege.new(u.id)
@@ -116,7 +116,7 @@ describe ApplicationController do
     it "should set session for the user to act on each column within a record" do
       user_group = FactoryGirl.create(:sys_user_group, :user_group_name => 'ceo')
       table_right = FactoryGirl.create(:sys_action_on_table, :action => 'index', :table_name => 'users')
-      right = FactoryGirl.create(:sys_user_right, :sys_user_group_id => user_group.id, :sys_action_on_table_id => table_right.id, :accessable_column_name => 'each_column')
+      right = FactoryGirl.create(:sys_user_right, :sys_user_group_id => user_group.id, :sys_action_on_table_id => table_right.id, :accessible_column_name => 'each_column')
       ul = FactoryGirl.create(:user_level, :user_id => 1, :position => 'ceo')
       u = FactoryGirl.create(:user, :user_levels => [ul])
       session[:user_privilege] = UserPrivilege.new(u.id)

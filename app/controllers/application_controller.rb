@@ -77,8 +77,8 @@ class ApplicationController < ActionController::Base
     SysUserRight.joins(:sys_user_group).where(:sys_user_groups => {:user_group_name => session[:user_privilege].user_groups}).each do |right|
       action_on_table = right.sys_action_on_table
       session[(action_on_table.action + '_' + action_on_table.table_name).to_sym] = true if action_on_table.action[-4..-1] == '_all'   #ex, session[:index_all_users], for table
-      session[(action_on_table.action + '_' + action_on_table.table_name + '_'  + right.accessable_column_name).to_sym] =
-                true if right.accessable_column_name.present?   #ex, session[:index_users_each_column] (full access), session[:index_users_name], for columns in a record
+      session[(action_on_table.action + '_' + action_on_table.table_name + '_'  + right.accessible_column_name).to_sym] =
+                true if right.accessible_column_name.present?   #ex, session[:index_users_each_column] (full access), session[:index_users_name], for columns in a record
     end
   end
 
