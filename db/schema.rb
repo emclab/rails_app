@@ -16,15 +16,12 @@ ActiveRecord::Schema.define(:version => 20121103200832) do
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
     t.text     "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
-
-# Could not dump table "sqlite_stat1" because of following StandardError
-#   Unknown type '' for column 'tbl'
 
   create_table "sys_action_on_tables", :force => true do |t|
     t.string   "action"
@@ -80,8 +77,8 @@ ActiveRecord::Schema.define(:version => 20121103200832) do
   create_table "user_levels", :force => true do |t|
     t.integer  "user_id"
     t.string   "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.string   "manager"
   end
 
@@ -93,8 +90,8 @@ ActiveRecord::Schema.define(:version => 20121103200832) do
     t.string   "salt"
     t.string   "status",             :default => "active"
     t.integer  "last_updated_by_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
   end
 
 end
