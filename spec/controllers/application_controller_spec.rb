@@ -99,6 +99,18 @@ describe ApplicationController do
       session[:user_privilege].sub_groups.include?('corp_head').should be_true
     end
 
+    it "should return true if user belongs to a module group" do
+      ul = FactoryGirl.create(:user_level, :user_id => 1, :position => 'sales')
+      u = FactoryGirl.create(:user, :user_levels => [ul] )
+      group = FactoryGirl.create(:sys_user_group, :user_group_name => 'sales')
+      mod = FactoryGirl.create(:sys_module, :module_group_name => 'sales')
+      module_mapping = FactoryGirl.create(:sys_module_mapping, :sys_module_id => mod.id, :sys_user_group_id => group.id)
+      session[:user_id] = u.id
+      session[:user_privilege] = UserPrivilege.new(u.id)
+      session[:user_privilege].belongs_to_module_group?('sales').should be_true
+
+    end
+
   end
   
   describe "login should assign user rights" do

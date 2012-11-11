@@ -5,6 +5,8 @@ class UserPrivilege
     @user_manager_groups = find_manager_groups
     @user_action_rights = find_action_rights
     @user_groups = find_user_groups
+    find_user_module_info #return @user_module_group_names, ex, [approver, reviewer]. for workflow module group names which hte user belongs to
+    #and return @user_module_names, ex, [approve_biztravel], for workflow module names which the user belongs to
   end
   
   def sub_groups
@@ -21,6 +23,16 @@ class UserPrivilege
   
   def user_groups
     return @user_groups
+  end
+
+  #return module group names for the user
+  def user_modules_group_names
+    return @user_module_group_names
+  end
+
+  #return the modules names for the user
+  def user_module_names
+    return @user_module_names
   end
 
   def find_user_groups
@@ -68,6 +80,17 @@ class UserPrivilege
       return_manager(lr.manager) if lr.manager.present?
     end
   end
+
+  def find_user_module_info
+    @user_module_group_names = []
+    @user_module_names = []
+    User.find_by_id(@user_id).user_levels.each do |ul|
+      SysModule.joins(:sys_module_mappings).where("sys_user_group_id = ?", SysUserGroup.find_by_user_group_name(ul.position)).each do |m|
+        @user_module_group_names << m.module_group_name unless @user_module_group_names.include?(m.module_group_name)
+        @user_module_names << m.module_name unless @user_module_names.include?(m.module_name)
+      end
+    end
+  end
   
   def find_action_rights
      rights = []
@@ -109,6 +132,10 @@ class UserPrivilege
   
   def has_matching_column?(column_name, record)
     return true if record.send(column_name) == @user_id
+  end
+
+  def belongs_to_module_group?(module_group_name)
+     @user_module_group_names.include?(module_group_name)
   end
   
 end

@@ -29,14 +29,6 @@ class ApplicationController < ActionController::Base
     end unless Session.first.nil?
   end
   
-  #before_filter in controller to see if the user is the company employee
-#  def require_employee
-#    if !user_type?('employee') 
-#      flash.now[:error] = "登录被拒!"
- #     redirect_to root_path
-#    end
-#  end
-  
   #before_filter in controller to see if the user is admin
   def require_admin
     grant_access?("index", "users")
@@ -73,6 +65,7 @@ class ApplicationController < ActionController::Base
     reset_session
   end
 
+  #fill out session variables for accessible columns and full("all") right on tables
   def assign_user_rights
     SysUserRight.joins(:sys_user_group).where(:sys_user_groups => {:user_group_name => session[:user_privilege].user_groups}).each do |right|
       action_on_table = right.sys_action_on_table
