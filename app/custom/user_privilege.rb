@@ -5,8 +5,7 @@ class UserPrivilege
     @user_manager_groups = find_manager_groups
     @user_action_rights = find_action_rights
     @user_groups = find_user_groups
-    find_user_module_info #return @user_module_group_names, ex, [approver, reviewer]. for workflow module group names which hte user belongs to
-    #and return @user_module_names, ex, [approve_biztravel], for workflow module names which the user belongs to
+    @user_module_groups = {}
   end
   
   def sub_groups
@@ -81,17 +80,18 @@ class UserPrivilege
     end
   end
 
-  def find_user_module_info
-    @user_module_group_names = []
-    @user_module_names = []
-    User.find_by_id(@user_id).user_levels.each do |ul|
-      SysModule.joins(:sys_module_mappings).where("sys_user_group_id = ?", SysUserGroup.find_by_user_group_name(ul.position)).each do |m|
-        @user_module_group_names << m.module_group_name unless @user_module_group_names.include?(m.module_group_name)
-        @user_module_names << m.module_name unless @user_module_names.include?(m.module_name)
-      end
+  def find_user_module_groups(moduleName)
+    module_groups = @user_module_groups[moduleName]
+    if module_groups.nil?
+      gids = SysUserGroup.where("user_group_name IN (?)", @user_groups)
+      gids = gids.collect! { |x| x.id}
+      module_groups = SysModule.joins(:sys_module_mappings).where(" module_name = ? AND sys_module_mappings.sys_user_group_id IN (?)", 
+                                                moduleName, gids).collect! {|x| x.module_group_name}
+      @user_module_groups[moduleName] = module_groups
     end
+    module_groups
   end
-  
+
   def find_action_rights
      rights = []
      User.find_by_id(@user_id).user_levels.each do |position|
@@ -132,10 +132,6 @@ class UserPrivilege
   
   def has_matching_column?(column_name, record)
     return true if record.send(column_name) == @user_id
-  end
-
-  def belongs_to_module_group?(module_group_name)
-     @user_module_group_names.include?(module_group_name)
   end
   
 end
