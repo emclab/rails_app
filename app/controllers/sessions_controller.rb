@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
     reset_session  #anti session fixation. must before assign session values
     user = User.authenticate(params[:login], params[:password]) 
     #collect user info
-    session[:user_name] = params[:login] 
+    session[:user_name] = params[:login]
     session[:user_ip] = request.env['HTTP_X_FORWARDED_FOR'].nil? ? request.env['REMOTE_ADDR'] : request.env['HTTP_X_FORWARDED_FOR']  
     #good for client behind proxy or load balancer            
     if user.nil?
