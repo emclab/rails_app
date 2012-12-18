@@ -20,7 +20,7 @@
   <b>职位：</b>
   <ol>
   <% @user.user_levels.each do |ul| %>
-    <li><%= return_position_name(ul.position) %></li>
+    <li><%= ul.position %></li>
   <% end %>
   </ol>
 </p>

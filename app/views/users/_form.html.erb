@@ -1,7 +1,9 @@
 <%= simple_form_for @user do |f| %>
   <%= f.input :name, :label => '名字：' %>
   <%= f.input :login, :label => '登录名：', :hint => '6位或以上' %>
+  <div id="user_password_checkbox">
   <%= f.input :update_password_checkbox, :as => :boolean, :label => '更新密码' %>
+  </div>
   <%= f.input :status, :collection => return_user_status, :selected => @user.status, :label => '用户状态：' %>
   <div id='user_password_fields'>
   <%= f.input :password, :label => '密码：', :hint => '6位或以上'  %>

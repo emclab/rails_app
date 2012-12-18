@@ -57,9 +57,9 @@ class UsersController < ApplicationController
     position = nil
     user.user_levels.each do |ul|
       if position.nil?
-        position = return_position_name(ul.position)
+        position = ul.position
       else
-        position = position + ', ' + return_position_name(ul.position)
+        position = position + ', ' + ul.position
       end
     end
     return position
@@ -91,30 +91,29 @@ class UsersController < ApplicationController
     end
   end
  
-  def return_position
-    [ ['财会','acct'], ['系统管理员','admin'],
-     ['工程副总','vp_eng'], ['市场副总', 'vp_sales'], ['总经理','coo'],['董事长','ceo']]
-  end
+  #def return_position
+   # [ ['财会','acct'], ['系统管理员','admin'],
+   #  ['工程副总','vp_eng'], ['市场副总', 'vp_sales'], ['总经理','coo'],['董事长','ceo']]
+  #end
   
-  def return_position_name(position)
-    pos = ''
-    case position
-    when 'admin'
-      pos = '系统管理员'
-    when 'ceo'
-      pos = '董事长'
-    when 'acct'
-      pos = '财会'
-    when 'vp_eng'
-      pos = '工程副总'
-    when 'eng'
-      pos = '工程师'
-    when 'coo'
-      pos = '总经理'
-    when 'vp_sales'
-      pos = '销售副总'
-    end
-    return position if pos.nil?
-    return pos
-  end  
+ #   pos = ''
+ #   case position
+  #  when 'admin'
+  #    pos = '系统管理员'
+  #  when 'ceo'
+  #    pos = '董事长'
+   # when 'acct'
+  #    pos = '财会'
+  #  when 'vp_eng'
+   #   pos = '工程副总'
+   # when 'eng'
+   #   pos = '工程师'
+   # when 'coo'
+   #   pos = '总经理'
+   # when 'vp_sales'
+   #   pos = '销售副总'
+  #  end
+  #  return position if pos.nil?
+   # return pos
+  #end  
 end
