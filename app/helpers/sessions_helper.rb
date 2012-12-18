@@ -14,9 +14,10 @@ module SessionsHelper
     end
   end
 
-  def belongs_to_module_group?(module_group_name)
-    session[:user_privilege].belongs_to_module_group?(module_group_name)
+  def find_user_module_groups(moduleName)
+    session[:user_privilege].find_user_module_groups(moduleName)
   end
+
 
   private
   
